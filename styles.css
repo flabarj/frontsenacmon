@@ -1,0 +1,174 @@
+:root{
+  --ink:#0b1220; --ink-2:#111a2e; --panel:#0e1627; --muted:#8fa4cc;
+  --good:#6CFF94; --bad:#ff6b6b; --warn:#ffd34d; --berry:#ff7ad1; --gold:#ffd34d; --ring:#1f2b45;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family: ui-rounded, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Ubuntu, Arial;
+  background: radial-gradient(1200px 800px at 65% -20%, #1a2541 0%, #0b1220 55%) fixed;
+  color:#eaf0ff;
+  overflow:hidden;
+}
+
+/* Topbar */
+.topbar{
+  position:fixed; left:12px; top:12px; right:12px;
+  height:72px; display:flex; align-items:flex-start; gap:10px;
+  z-index:50; pointer-events:none;
+}
+.dice{display:flex; gap:10px; pointer-events:auto;}
+.die{
+  width:54px; height:54px; border-radius:14px;
+  background:#fff; color:#111; font-weight:900;
+  display:grid; place-items:center; font-size:22px;
+  box-shadow:0 10px 24px rgba(0,0,0,.35); position:relative; overflow:hidden;
+  transition: transform .15s ease;
+}
+.die.roll{animation: wobble .6s ease}
+@keyframes wobble{
+  0%{transform:rotate(0) scale(1)}
+  35%{transform:rotate(10deg) scale(1.06)}
+  70%{transform:rotate(-8deg) scale(1.05)}
+  100%{transform:rotate(0) scale(1)}
+}
+.hud{display:flex; gap:12px; pointer-events:auto; margin-top:-2px; flex-wrap:wrap;}
+.pill{
+  padding:8px 12px; border-radius:999px;
+  background:#223255; border:1px solid #2e3f68; color:#cfe0ff;
+  font-weight:800; letter-spacing:.2px; font-size:13px;
+}
+.pill .dot{display:inline-block; width:10px; height:10px; border-radius:50%; margin-right:6px; vertical-align:middle}
+.pill .num{font-weight:900; color:#fff}
+.turnpill{background:#1b2a4f}
+.msgbar{
+  margin-left:10px; pointer-events:auto; max-width:min(52vw, 680px);
+  background:linear-gradient(180deg, rgba(10,16,30,.88), rgba(10,16,30,.82));
+  border:1px solid rgba(255,255,255,.1); border-radius:12px; padding:10px 14px;
+  font-size:14px; line-height:1.25; box-shadow:0 8px 20px rgba(0,0,0,.35);
+}
+
+/* Lado direito – histórico */
+.side{
+  position:fixed; top:0; right:0; width:340px; height:100%;
+  background:linear-gradient(180deg, rgba(12,18,35,.6), rgba(12,18,35,.15));
+  border-left:1px solid rgba(255,255,255,.06);
+  padding:80px 14px 14px;
+  overflow:auto; backdrop-filter: blur(6px);
+}
+.side h3{margin:0 0 10px 0; font-size:18px; letter-spacing:.6px}
+.log{display:flex; flex-direction:column; gap:8px; font-size:14px}
+.log .it{padding:8px 10px; border-radius:10px; background:#10192f; border:1px solid rgba(255,255,255,.06)}
+.tag{font-weight:800; letter-spacing:.3px; margin-right:6px}
+.ok{color:var(--good)} .bad{color:var(--bad)} .warn{color:var(--warn)}
+
+/* Centro – tabuleiro */
+.stageWrap{
+  position:fixed; inset:86px 352px 96px 12px; display:grid; place-items:center;
+}
+.stage{
+  width:min(92vmin, 920px); aspect-ratio:1/1; border-radius:22px; position:relative; overflow:hidden;
+  background:
+    radial-gradient(50% 60% at 50% 40%, rgba(90,120,220,.16), transparent 60%),
+    linear-gradient(180deg,#0d1430 0%, #0a1228 100%);
+  box-shadow:0 26px 60px rgba(0,0,0,.55), 0 0 0 2px rgba(255,255,255,.05) inset;
+}
+.board{position:absolute; inset:0; background-size:cover; background-position:center; background-repeat:no-repeat;}
+.board::after{
+  content:""; position:absolute; inset:0; pointer-events:none;
+  background:
+    radial-gradient(120px 120px at 10% 12%, rgba(255,255,255,.06), transparent 70%),
+    radial-gradient(160px 160px at 90% 88%, rgba(255,255,255,.06), transparent 70%);
+}
+
+/* Trilho (azul) ilustrativo */
+.path-dot{position:absolute; width:10px; height:10px; background:#67a3ff; border-radius:50%; opacity:.18; pointer-events:none}
+
+/* Peões */
+.token{
+  --s:84px; position:absolute; width:var(--s); height:var(--s);
+  transform: translate(-50%, -50%); z-index:5;
+  transition: left .28s ease, top .28s ease;
+}
+.token .bubble{
+  width:var(--s); height:var(--s); border-radius:50%;
+  background: radial-gradient(circle at 35% 30%, #ffffff, #bdc9ff 60%, #a4afff 100%);
+  box-shadow: 0 12px 24px rgba(0,0,0,.45), 0 0 26px rgba(130,150,255,.35) inset;
+  border:3px solid rgba(15,20,40,.45); position:absolute; inset:0;
+}
+.token.p2 .bubble{
+  background: radial-gradient(circle at 35% 30%, #fff1f8, #ffc6e7 60%, #ff9bdc 100%);
+}
+.token img{
+  position:absolute; width:72%; left:14%; top:6%;
+  filter: drop-shadow(0 8px 12px rgba(0,0,0,.45));
+}
+.token .label{
+  position:absolute; bottom:-24px; left:50%; transform:translateX(-50%);
+  padding:2px 8px; border-radius:999px; font-size:12px; font-weight:800;
+  background:rgba(12,18,35,.8); border:1px solid rgba(255,255,255,.08);
+}
+
+/* Controles */
+.controls{
+  position:fixed; left:12px; right:352px; bottom:16px; display:flex; gap:12px; justify-content:center; z-index:20;
+}
+.btn{
+  padding:14px 22px; border-radius:16px; border:none; cursor:pointer; font-weight:900; letter-spacing:.3px; font-size:16px;
+  box-shadow:0 10px 0 #9e7a13, 0 0 22px rgba(255,211,77,.35);
+  background:linear-gradient(180deg,#ffd34d,#ffc42f); color:#231701; border:3px solid #9e7a13;
+}
+.btn:active{transform:translateY(2px); box-shadow:0 8px 0 #9e7a13}
+.btn.secondary{
+  background:linear-gradient(180deg,#cfe0ff,#b8d2ff); border-color:#4b6fb4; color:#041024; box-shadow:0 10px 0 #2c4a83,0 0 22px rgba(120,170,255,.35)
+}
+
+/* Modais */
+.modal{position:fixed; inset:0; display:none; place-items:center; z-index:60; background:rgba(5,8,16,.55); backdrop-filter: blur(6px);}
+.modal.on{display:grid;}
+.card{
+  width:min(1080px, 92vw); max-height:86vh; overflow:auto;
+  background:#0d1529; border:1px solid rgba(255,255,255,.08); border-radius:20px; padding:18px 18px 22px;
+  box-shadow:0 30px 80px rgba(0,0,0,.6);
+}
+.row{display:flex; gap:14px; flex-wrap:wrap}
+.seg{flex:1 1 440px; min-width:280px}
+.hline{height:1px; background:rgba(255,255,255,.06); margin:10px 0 16px}
+.okrow{display:flex; justify-content:flex-end; margin-top:10px}
+.okbtn{padding:12px 18px; border-radius:12px; border:none; background:#ffd34d; color:#231701; font-weight:900; cursor:pointer}
+.toggle{display:inline-flex; gap:8px; padding:6px; background:#0f1a33; border:1px solid rgba(255,255,255,.08); border-radius:12px;}
+.toggle button{padding:8px 14px; border-radius:10px; border:none; cursor:pointer; font-weight:900; letter-spacing:.2px; color:#cfe0ff; background:transparent;}
+.toggle button.active{background:#203055}
+.gridNums{display:grid; grid-template-columns:repeat(9, 1fr); gap:6px}
+.numBtn{padding:8px 0; border-radius:10px; text-align:center; cursor:pointer; user-select:none; border:1px solid rgba(255,255,255,.15); background:#102044; font-weight:900}
+.numBtn.on{outline:3px solid #ffd34d; background:#213366}
+.field{display:flex; align-items:center; gap:8px; margin:6px 0}
+.field input[type="number"]{width:110px; padding:8px; border-radius:10px; border:1px solid #2e3f68; background:#0f1c3a; color:#eaf0ff; font-weight:800}
+.hint{font-size:12px; color:#9fb4e6}
+.stat{font-weight:900}
+.tiny{font-size:12px; opacity:.85}
+
+/* Setup starters preview */
+.starterBox{
+  height:220px; display:grid; place-items:center;
+  background:#0e1933; border:1px solid rgba(255,255,255,.06); border-radius:14px;
+}
+.starterBox img{max-height:180px; max-width:95%}
+
+/* Overlay de vencedor */
+.overlay{position:fixed; inset:0; display:none; place-items:center; z-index:80; background:rgba(2,4,10,.65); backdrop-filter: blur(6px);}
+.overlay.on{display:grid;}
+.overlayCard{
+  background:#0d1529; border:1px solid rgba(255,255,255,.08); border-radius:20px; padding:28px 28px 24px;
+  box-shadow:0 30px 80px rgba(0,0,0,.6); text-align:center; min-width:320px;
+}
+.winnerTitle{font-size:34px; font-weight:1000; letter-spacing:1px; color:#ffd34d}
+.winnerSub{margin-top:6px; font-size:16px; color:#cfe0ff}
+
+@media (max-width: 1160px){
+  .side{width:300px}
+  .stageWrap{right:312px}
+  .controls{right:312px}
+}
