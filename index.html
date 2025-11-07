@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Senacmon Arena – MVP</title>
+
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+
+  <!-- TOPO: dados + HUD + mensagem -->
+  <div class="topbar">
+    <div class="dice">
+      <div id="d1" class="die">—</div>
+      <div id="d2" class="die">—</div>
+    </div>
+
+    <div class="hud">
+      <div id="turnPill" class="pill turnpill">Vez de —</div>
+      <div id="hudP1" class="pill"><span class="dot" style="background:#8ea3ff"></span>P1 Berries: <span class="num" id="p1b">100</span></div>
+      <div id="hudP2" class="pill" style="display:none"><span class="dot" style="background:#ff9fe0"></span>P2 Berries: <span class="num" id="p2b">100</span></div>
+      <div class="pill">Rodada: <span class="num" id="hudRound">1</span>/<span class="num" id="hudRoundLim">10</span></div>
+    </div>
+
+    <div id="msg" class="msgbar">Clique em Iniciar para começar.</div>
+  </div>
+
+  <!-- LADO DIREITO: histórico -->
+  <aside class="side">
+    <h3>Histórico</h3>
+    <div id="log" class="log"></div>
+  </aside>
+
+  <!-- CENTRO: tabuleiro -->
+  <div class="stageWrap">
+    <div id="stage" class="stage">
+      <div id="board" class="board"></div>
+      <div id="pathDots"></div>
+      <!-- tokens criados via JS -->
+    </div>
+  </div>
+
+  <!-- CONTROLES -->
+  <div class="controls">
+    <button id="btnStart" class="btn">Iniciar</button>
+    <button id="btnRoll" class="btn secondary">🎲 Rolar</button>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>
