@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Senacmon Arena – MVP</title>
+
+  <link rel="stylesheet" href="styles.css"/>
+
+  <!-- Preload opcional -->
+  <link rel="preload" as="image" href="src/static/img.png">
+  <link rel="preload" as="image" href="src/static/pokeball.png">
+  <link rel="preload" as="image" href="src/static/starter_water.png">
+  <link rel="preload" as="image" href="src/static/starter_fire.png">
+  <link rel="preload" as="image" href="src/static/starter_grass.png">
+</head>
+<body>
+
+  <!-- TOPO -->
+  <div class="topbar">
+    <div class="dice">
+      <div id="d1" class="die">—</div>
+      <div id="d2" class="die">—</div>
+    </div>
+
+    <div class="hud">
+      <div id="turnPill" class="pill turnpill">Vez de —</div>
+      <div id="hudP1" class="pill"><span class="dot" style="background:#8ea3ff"></span>P1 Berries: <span class="num" id="p1b">100</span></div>
+      <div id="hudP2" class="pill" style="display:none"><span class="dot" style="background:#ff9fe0"></span>P2 Berries: <span class="num" id="p2b">100</span></div>
+      <div class="pill">Rodada: <span class="num" id="hudRound">1</span>/<span class="num" id="hudRoundLim">10</span></div>
+    </div>
+
+    <div id="msg" class="msgbar">Inicializando…</div>
+  </div>
+
+  <!-- LADO DIREITO -->
+  <aside class="side">
+    <h3>Histórico</h3>
+    <div id="log" class="log"></div>
+  </aside>
+
+  <!-- TABULEIRO -->
+  <div class="stageWrap">
+    <div id="stage" class="stage">
+      <div id="board" class="board"></div>
+      <div id="pathDots"></div>
+    </div>
+  </div>
+
+  <!-- CONTROLES -->
+  <div class="controls">
+    <button id="btnStart" class="btn">Iniciar</button>
+    <button id="btnRoll" class="btn secondary">🎲 Rolar</button>
+  </div>
+
+  <!-- MODAL DE BATALHA / APOSTA -->
+  <div id="battleModal" class="modal">
+    <div class="card">
+      <h2 style="margin:6px 6px 0">Batalha!</h2>
+      <div id="battleOpp" class="tiny" style="margin:4px 6px 10px; color:#b7c9ff">Oponente: —</div>
+
+      <div class="row">
+        <section class="seg">
+          <h3 style="margin:6px 6px 8px">Aposta</h3>
+          <div class="toggle" style="margin:6px">
+            <button id="betNo" class="active">Sem aposta</button>
+            <button id="betYes">Apostar</button>
+          </div>
+
+          <div id="betBox" style="display:none; margin:6px">
+            <div class="field">
+              <label class="tiny" style="min-width:140px">Modo:</label>
+              <div class="toggle">
+                <button id="mode1" class="active">1 número</button>
+                <button id="mode2">2 números</button>
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="tiny" style="min-width:140px">Escolha (1–9):</label>
+            </div>
+            <div id="numGrid" class="gridNums" style="margin:6px 0"></div>
+
+            <div class="field">
+              <label class="tiny" style="min-width:140px">Valor da aposta:</label>
+              <input id="betVal" type="number" min="10" max="50" step="1" value="10"/>
+              <span class="hint" id="betHint">Mínimo 10 | Máx 50</span>
+            </div>
+
+            <div class="field tiny">
+              <div>Multiplicador base: <span id="multBase" class="stat">3.0</span> • Ajuste elemental: <span id="multAdj" class="stat">0.0</span> • Total: <span id="multEff" class="stat">3.0</span></div>
+            </div>
+          </div>
+
+          <div class="hline"></div>
+          <div class="tiny">Pagamentos: 1 número 3.0x, 2 números 1.8x. Vantagem elemental: +0.5x; desvantagem: −0.5x.</div>
+        </section>
+
+        <section class="seg">
+          <h3 style="margin:6px 6px 8px">Resumo</h3>
+          <div id="battleSummary" class="tiny" style="line-height:1.45; color:#cfe0ff">—</div>
+        </section>
+      </div>
+
+      <div class="okrow">
+        <button id="okBattle" class="okbtn">Resolver</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- OVERLAY DE VITÓRIA -->
+  <div id="winnerOverlay" class="modal">
+    <div class="card" style="text-align:center">
+      <h1 style="margin:0 0 8px; font-size:40px; letter-spacing:1px">🏆 VENCEDOR</h1>
+      <div id="winnerText" style="font-size:20px; margin-bottom:14px">—</div>
+      <div class="okrow"><button id="okWinner" class="okbtn">OK</button></div>
+    </div>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>
